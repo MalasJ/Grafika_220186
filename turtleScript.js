@@ -110,20 +110,6 @@ function fullGraph(degree,size=20,color=turtleColor){
         }
     }
 }
-/*function drawDot(r){
-    n=360;
-    side=2*r*Math.sin(Math.PI/n);
-    angle=(n-2)*Math.PI/n;
-    forward(r);
-    turn(Math.PI/2);
-    forward(side/2);
-    turn()
-    penDown();
-    for (let i=0; i<n;i++){
-        forward()
-    }
-    penUp();
-}*/
 function biPartFullGraph(m,n,size=20,color=turtleColor,color1="green",color2="red"){
     degree=m+n;
     polygonAngle=(degree-2)*Math.PI/degree;
