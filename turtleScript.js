@@ -8,7 +8,11 @@ var alfa=0;
 var pen=0;
 //kąt jest skierowany w prawo!
 var turtleColor="#000000";
-
+var polygonDegree=3;
+var polygonRadius=100;
+var fractalDegree=1;
+var fractalRadius=100;
+var kochBaseDegree=3;
 function forward(d){
     x=x+d*Math.cos(alfa);
     y=y+d*Math.sin(alfa);
@@ -34,6 +38,23 @@ function reset(){
     ctx.moveTo(x,y);
     alfa=0;
     changeColor("#000000");
+}
+function naprzod(){
+    forward(document.getElementById("distance").value);
+}
+function obroc(){
+    turn(document.getElementById("listenAngle").value*Math.PI/180);
+}
+function restart(){
+    ctx.clearRect(0,0,maxX,maxY);
+    ctx.beginPath();
+    reset();
+    penDown();
+}
+function zmienKolor(){
+    ctx.beginPath();
+    changeColor(document.getElementById("pickedColor").value);
+    forward(0);
 }
 function regPolygon(n,side,color){
     //clockwise
@@ -70,6 +91,75 @@ function drawRegularPolygon(n,side,color){
     startPositionRegPolygon(n,side);
     regPolygon(n,side,color);
     reset();
+}
+function zmniejszStopien(){
+    if (polygonDegree>3){
+        polygonDegree--;
+        document.getElementById("stopień wielokąta").innerHTML = "stopień wielokąta = " + polygonDegree;
+    }
+}
+function zwiekszStopien(){
+    polygonDegree++;
+    document.getElementById("stopień wielokąta").innerHTML = "stopień wielokąta = " + polygonDegree;
+}
+function zmniejszRozmiarWielokata(){
+    if (polygonRadius>50){
+        polygonRadius-=50;
+        document.getElementById("rozmiar wielokąta").innerHTML = "rozmiar wielokąta = " + polygonRadius;
+    }
+}
+function zwiekszRozmiarWielokata(){
+    polygonRadius+=50;
+    document.getElementById("rozmiar wielokąta").innerHTML = "rozmiar wielokąta = " + polygonRadius;
+}
+function rysujWielokat(){
+    ctx.clearRect(0,0,maxX,maxY);
+    document.getElementById("stopień wielokąta").innerHTML = "stopień wielokąta = " + polygonDegree;
+    document.getElementById("rozmiar wielokąta").innerHTML = "rozmiar wielokąta = " + polygonRadius;
+    drawRegularPolygon(polygonDegree,polygonRadius*Math.sin(1/polygonDegree*Math.PI),document.getElementById("pickedColor").value);
+}
+/////////////
+function zmniejszStopienFraktala(){
+    if (fractalDegree>1){
+        fractalDegree--;
+        document.getElementById("stopień fraktala").innerHTML = "stopień fraktala = " + fractalDegree;
+    }
+}
+function zwiekszStopienFraktala(){
+    fractalDegree++;
+    document.getElementById("stopień fraktala").innerHTML = "stopień fraktala = " + fractalDegree;
+}
+function zmniejszRozmiarFraktala(){
+    if (fractalRadius>50){
+        fractalRadius-=50;
+        document.getElementById("rozmiar fraktala").innerHTML = "rozmiar fraktala = " + fractalRadius;
+    }
+}
+function zwiekszRozmiarFraktala(){
+    fractalRadius+=50;
+    document.getElementById("rozmiar fraktala").innerHTML = "rozmiar fraktala = " + fractalRadius;
+}
+function zmniejszStopienPodstawyKocha(){
+    if (kochBaseDegree>2){
+        kochBaseDegree--;
+        document.getElementById("stopień podstawy Kocha").innerHTML = "stopień podstawy Kocha = " + kochBaseDegree;
+    }
+}
+function zwiekszStopienPodstawyKocha(){
+    kochBaseDegree++;
+    document.getElementById("stopień podstawy Kocha").innerHTML = "stopień podstawy Kocha = " + kochBaseDegree;
+}
+function rysujKocha(){
+    ctx.clearRect(0,0,maxX,maxY);
+    document.getElementById("stopień fraktala").innerHTML = "stopień fraktala = " + fractalDegree;
+    document.getElementById("rozmiar fraktala").innerHTML = "rozmiar fraktala = " + fractalRadius;
+    drawKoch(fractalDegree,fractalRadius,kochBaseDegree);
+}
+function rysujSierp(){
+    ctx.clearRect(0,0,maxX,maxY);
+    document.getElementById("stopień fraktala").innerHTML = "stopień fraktala = " + fractalDegree;
+    document.getElementById("rozmiar fraktala").innerHTML = "rozmiar fraktala = " + fractalRadius;
+    drawSierp(fractalDegree,fractalRadius);
 }
 function fullGraph(degree,size=20,color=turtleColor){
     reset();
@@ -112,6 +202,7 @@ function fullGraph(degree,size=20,color=turtleColor){
 }
 function biPartFullGraph(m,n,size=20,color=turtleColor,color1="green",color2="red"){
     degree=m+n;
+    //document.getElementById("testing").innerHTML="degree " + degree;
     polygonAngle=(degree-2)*Math.PI/degree;
     diagAngle=Math.PI/degree;
     grain=20;
@@ -155,6 +246,22 @@ function biPartFullGraph(m,n,size=20,color=turtleColor,color1="green",color2="re
         turn(Math.PI);
     }
 }
+function rysujGraf(){
+    restart();
+    color=document.getElementById("pickedColor").value;
+    n=parseInt(document.getElementById("fullGraphDegree").value);
+    m=parseInt(document.getElementById("biGraphDegree").value);
+    size=parseInt(document.getElementById("size").value);
+    //document.getElementById("fGD").innerHTML = "fullGraphDegree = " + n;
+    //document.getElementById("biGD").innerHTML = "biGraphDegree = " + m;
+    //document.getElementById("sz").innerHTML = "size = " + size;
+    if (isNaN(m) || m==0){
+        fullGraph(n,size,color);
+    }
+    else{
+        biPartFullGraph(n,m,size,color);
+    }
+}
 function koch(degree,size){
     //koch curve
     if(degree==1){
@@ -172,16 +279,19 @@ function koch(degree,size){
         koch(degree,size);
     }
 }
-function drawKoch(degree,size){
+function drawKoch(degree,size,n){
     //max 6, starts to lag after that
     penUp();
-    startPositionRegPolygon(3,size);
+    reset();
+    changeColor(document.getElementById("pickedColor").value);
+    ctx.beginPath();
+    startPositionRegPolygon(n,size);
     penDown();
-    koch(degree,size);
-    turn(2/3*Math.PI);
-    koch(degree,size);
-    turn(2/3*Math.PI);
-    koch(degree,size);
+    angle=(n-2)*Math.PI/n;
+    for (let i=0; i<n; i++){
+        koch(degree,size);
+        turn(Math.PI-angle);
+    }
 }
 function sierpinski(degree,size){
     //starts to lag beyond deg 6
@@ -204,12 +314,14 @@ function sierpinski(degree,size){
 }
 function drawSierp(degree,size){
     reset();
+    changeColor(document.getElementById("pickedColor").value);
+    ctx.beginPath();
     startPositionRegPolygon(3,size);
     sierpinski(degree,size);
 }
-reset();
-forward(100);
-drawKoch(5,400);
+//reset();
+//forward(100);
+//drawKoch(5,400);
 //turn(Math.PI);
 //drawSierp(7,400);
 //changeColor("#FF00FF");
@@ -227,37 +339,3 @@ turn(Math.PI/4);*/
 //changeColor("#dcff00");
 //forward(60);
 //drawRegularPolygon(5,21,"#000000");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//some testing
-/*penUp();
-turn(1/4*Math.PI);
-forward(200);
-penDown();
-changeColor("#dcff00");
-turn(Math.PI/6);
-forward(80);*/
-/*turn(1/4*Math.PI);
-forward(200
-
-start();
-changeColor("#dcff00");
-ctx.font="12px ComicSansMS";
-//ctx.fillText("kąt "+alfa+"x "+x+"y "+y,20,20);
-var temp=Math.sin(4*Math.PI);
-ctx.fillText("kątrgrgrgr "+temp,20,20);*/

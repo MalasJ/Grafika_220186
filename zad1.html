@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <body onload="restart()">
+        <input type="number" id="distance" placeholder="Odległość" value="100">
+        <button onclick='naprzod()'>Naprzód</button>
+        <input type="number" id="listenAngle" placeholder="kąt w stopniach">
+        <button onclick='obroc()'>Obróć</button>
+        <input type="color" id="pickedColor">
+        <button onclick='zmienKolor()'>Zmień kolor</button>
+        <button onclick='penUp()'>penUp</button>
+        <button onclick='penDown()'>penDown</button>
+        <button onclick='restart()'>reset</button>
+        <canvas id="myCanvas" width="1000" height="500" style="border:1px solid#0000FF";>
+        testowy tekst
+        </canvas>
+        <script src="turtleScript.js"></script>
+    </body>
+</html>
