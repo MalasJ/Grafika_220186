@@ -20,7 +20,6 @@ function forward(d){
     if (pen==1){
         ctx.lineTo(bx,by);
         ctx.stroke();
-        //ctx.fillText(d+" "+(180/Math.PI*azim).toFixed(2)+" "+(180/Math.PI*zenith).toFixed(2),bx,by);
     }
     else{ctx.moveTo(bx,by);}
 }

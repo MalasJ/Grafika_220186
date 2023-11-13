@@ -19,7 +19,6 @@ function forward(d){
     if (pen==1){
         ctx.lineTo(x,y);
         ctx.stroke();
-        //ctx.fillText(d,x-d*Math.cos(alfa)/2,y-d*Math.sin(alfa)/2);
     }
     else{ctx.moveTo(x,y);}
 }
@@ -62,12 +61,9 @@ function regPolygon(n,side,color){
     changeColor(color);
     penDown();
     for (let i=0; i<n; i++){
-        //ctx.fillText("i "+i +" n "+n+" x "+x+" y "+y,20,20+20*i);
         forward(side);
         turn(Math.PI-angle);
-        //ctx.fillText("i "+i +" n "+n+" x "+x+" y "+y,400,20+20*i);
     }
-    //ctx.closePath();
 }
 function startPositionRegPolygon(n,side){
     //centered at wherever we are
@@ -166,10 +162,8 @@ function fullGraph(degree,size=20,color=turtleColor){
     startPositionRegPolygon(degree,size);
     regPolygon(degree,size,color);
     for (let i=2;i<=Math.floor(degree/2);i++){
-        //reset();
         changeColor(color);
         ctx.beginPath();
-        //startPositionRegPolygon(degree,size);
         forward(0); //beginPath needs some moving first to start rendering
         polygonAngle=(degree-2)*Math.PI/degree;
         diagAngle=Math.PI/degree*(i-1); //angle of current jump diagonal
@@ -179,7 +173,6 @@ function fullGraph(degree,size=20,color=turtleColor){
             for (let k=0;k<i;k++){
                 turn(diagAngle);
                 regPolygon(degree/i,size*Math.sin(i/degree*Math.PI)/Math.sin(Math.PI/degree),color);
-                //ctx.fillText("i "+i +" k "+k+" color "+turtleColor,20+20*k,20+20*i+20*k);
                 //move one side forward
                 turn(-diagAngle);
                 penUp();
@@ -202,7 +195,6 @@ function fullGraph(degree,size=20,color=turtleColor){
 }
 function biPartFullGraph(m,n,size=20,color=turtleColor,color1="green",color2="red"){
     degree=m+n;
-    //document.getElementById("testing").innerHTML="degree " + degree;
     polygonAngle=(degree-2)*Math.PI/degree;
     diagAngle=Math.PI/degree;
     grain=20;
@@ -252,9 +244,6 @@ function rysujGraf(){
     n=parseInt(document.getElementById("fullGraphDegree").value);
     m=parseInt(document.getElementById("biGraphDegree").value);
     size=parseInt(document.getElementById("size").value);
-    //document.getElementById("fGD").innerHTML = "fullGraphDegree = " + n;
-    //document.getElementById("biGD").innerHTML = "biGraphDegree = " + m;
-    //document.getElementById("sz").innerHTML = "size = " + size;
     if (isNaN(m) || m==0){
         fullGraph(n,size,color);
     }
@@ -319,23 +308,3 @@ function drawSierp(degree,size){
     startPositionRegPolygon(3,size);
     sierpinski(degree,size);
 }
-//reset();
-//forward(100);
-//drawKoch(5,400);
-//turn(Math.PI);
-//drawSierp(7,400);
-//changeColor("#FF00FF");
-//fullGraph(5,80,"#7fddd4");
-//biPartFullGraph(4,5,80,"blue");
-
-//drawRegularPolygon(4,51,"#00ff00"); //#7fddd4 #dcff00
-//reset();
-/*x=maxX/2;
-y=maxY/2;
-ctx.moveTo(x,y);
-turn(Math.PI/4);*/
-//regPolygon(5,100,"#00ff00");
-//penDown();
-//changeColor("#dcff00");
-//forward(60);
-//drawRegularPolygon(5,21,"#000000");
