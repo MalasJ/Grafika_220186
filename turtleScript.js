@@ -308,3 +308,86 @@ function drawSierp(degree,size){
     startPositionRegPolygon(3,size);
     sierpinski(degree,size);
 }
+
+//lista2
+
+
+function LsystemKoch(degree){
+    //generate nth word
+    if(degree==1){
+        return "F";
+    }
+    else{
+        degree-=1;
+        return LsystemKoch(degree) + "-" + LsystemKoch(degree) + "++" + LsystemKoch(degree) + "-" +LsystemKoch(degree);
+    }
+}
+function readLsystemKoch(degree,size){
+    //forward(1),turn(-60),turn(60)
+    reset();
+    x=0;
+    y=maxY-10;
+    ctx.moveTo(x,y);
+    ctx.beginPath();
+    penDown();
+    forward(0);
+    var sentence=LsystemKoch(degree);
+    size=size/3**(degree-1);
+    Array.from(sentence).forEach(word => { 
+        if (word=="F"){forward(size);}
+        else if (word=="+"){turn(1/3*Math.PI);}
+        else if (word=="-"){turn(-1/3*Math.PI);}
+        else {console.log(word);}
+    });
+}
+const mapString = (str, fn) => str.split('').map((c) => fn(c,str)).join('');
+function LsystemCantor(word){
+    //substitutions
+    if (word=="A"){
+        return "ABA";
+    }
+    else if (word=="B"){
+        return "BBB";
+    }
+    else{console.log(word);}
+}
+function readLsystemCantor(degree,size){
+    var sentence="A";
+    for (let i=1; i<degree;i++){
+        sentence=mapString(sentence,c=>LsystemCantor(c));
+    }
+    ctx.beginPath();
+    penDown();
+    forward(0);
+    size=size/3**(degree-1);
+    Array.from(sentence).forEach(word => { 
+        if (word=="A"){
+            penDown();
+            forward(size);
+        }
+        else if (word=="B"){
+            penUp();
+            forward(size);
+        }
+        else {console.log(word);}
+    });
+}
+function drawCantors(){
+    degree=fractalDegree;
+    offset=20;
+    ctx.clearRect(0,0,maxX,maxY);
+    document.getElementById("stopień fraktala").innerHTML = "stopień fraktala = " + fractalDegree;
+    for (let i=1; i<=degree; i++){
+        reset();
+        x=offset;
+        y=maxY/(degree+1)*i;
+        ctx.moveTo(x,y);
+        readLsystemCantor(i,maxX-2*offset);
+    }
+    
+}
+function drawKoch(){
+    ctx.clearRect(0,0,maxX,maxY);
+    document.getElementById("stopień fraktala").innerHTML = "stopień fraktala = " + fractalDegree;
+    readLsystemKoch(fractalDegree,maxX);
+}
