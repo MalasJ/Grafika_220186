@@ -386,7 +386,7 @@ function drawCantors(){
     }
     
 }
-function drawKoch(){
+function drawKochSystem(){
     ctx.clearRect(0,0,maxX,maxY);
     document.getElementById("stopień fraktala").innerHTML = "stopień fraktala = " + fractalDegree;
     readLsystemKoch(fractalDegree,maxX);
