@@ -4,25 +4,22 @@ var maxX=c.width;
 var maxY=c.height;
 function testTime(testSize,x0,y0,x1,y1){
     //zamiana kolejności testowania bardzo zmienia wyniki?????????
-    
-    //console.log("nast");
-    
     var start2=performance.now();
     for (let j=0; j<testSize; j++){
         ctx.clearRect(x0-1,y0-1,x1-x0+2,y1-y0+2);
         drawEllipseBresenham(x0,y0,x1,y1,"#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0"));
         //console.log(performance.now());
     }
-    var bresenhamTime=performance.now();//testSize;
-    //x0+=x1;
-    //x1+=x1;
+    var bresenhamTime=performance.now();
+    x0+=x1;
+    x1+=x1;
     var start1=performance.now();
     for (let i=0; i<testSize; i++){
         ctx.clearRect(x0-1,y0-1,x1-x0+2,y1-y0+2);
         drawEllipseNaive(x0,y0,x1,y1,"#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0"));
         //console.log(performance.now());
     }
-    var naiveTime=performance.now();//testSize;
+    var naiveTime=performance.now();
     //console.log("naive:"+start1+" "+naiveTime+" "+(naiveTime-start1) + " bresenham:" +start2+" "+bresenhamTime+" "+(bresenhamTime-start2));
     //console.log("naive:"+naiveTime/testSize + " bresenham:" + bresenhamTime/testSize);
     console.log("naive:"+(naiveTime-start1) + " bresenham:" + (bresenhamTime-start2));
@@ -81,7 +78,7 @@ function drawEllipseNaive(x0,y0,x1,y1,color){
     //semi-diameters
     const a=Math.abs(x1-x0)/2; const a2=a**2; 
     const b=Math.abs(y1-y0)/2; const b2=b**2;
-    const xstop=a**3/(a2+b2);
+    const xstop=a2/Math.sqrt(a2+b2);
     var m=b/a;
     //swap if needed
     if (x0>x1){x0=x1;}//x1+=a;
@@ -99,7 +96,7 @@ function drawEllipseNaive(x0,y0,x1,y1,color){
         ctx.rect(-x+tx, y+ty, 1, 1);
         ctx.rect(-x+tx, -y+ty, 1, 1);
     }
-    //when a**2/b**2 % done, switch to f(y)=x
+    //when tangent is 45 degrees, switch to f(y)=x
     m=a/b;
     for (;y>=0;y--){
         x=m*Math.sqrt(b2-y**2);
@@ -111,8 +108,9 @@ function drawEllipseNaive(x0,y0,x1,y1,color){
     ctx.stroke();
 }
 console.clear();
+drawEllipseNaive(10,10,140,500,"red");
 //dziwne wyniki dla 100
-testSize=100;
+/*testSize=100;
 
 console.log("wysokie");
 testTime(testSize,10,100,70,440); //1.411 1.727
