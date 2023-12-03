@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!--<meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
+
 <canvas id="myCanvas" width="300" height="300" style="border:1px solid #c3c3c3;">
 	Your browser does not support the canvas element.
 </canvas>
@@ -29,9 +29,10 @@ var circles=new Array(dx*dy);
 var gamerID=0;
 winningStates=[];
 turn=0;
+
 canvas.addEventListener('mousedown', e=> {
-		x_pos = e.x;
-		y_pos = e.y;
+		x_pos = e.pageX;
+		y_pos = e.pageY;
 		
         i=Math.floor(x_pos/objectWidth);
         j=Math.floor(y_pos/objectHeight);
@@ -133,7 +134,6 @@ function component(x, y, width, height) {
         return success;
     }
 }
-
 </script>
 </body>
 </html>
