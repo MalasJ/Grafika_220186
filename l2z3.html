@@ -36,18 +36,18 @@ canvas.addEventListener('mousedown', e=> {
 		
         i=Math.floor(x_pos/objectWidth);
         j=Math.floor(y_pos/objectHeight);
-        console.log(i,j);
+        //console.log(i,j);
 		move(i,j);
 	});
 function move(i,j){
-    var id=dy*j+i;
+    var id=dx*j+i;
     console.log(id);
     if (squares[id].clicked(gamerID)){
         if (gamerID==1){circles.push(id);}
         else {crosses.push(id);}
         turn++;
         if(checkWinning(gamerID)){
-            console.log("wygrana");
+            //console.log("wygrana");
             document.getElementById("gracz").innerHTML = 'Wygrał gracz ' + gamerID;
             squares.forEach(sq=>sq.disabled=1);
         }
@@ -78,14 +78,14 @@ function startGame() {
     circles=new Array(dx*dy);
     winningStates=[];
     turn=0;
-    console.log(squares);
+    //console.log(squares);
     document.getElementById("gracz").innerHTML = 'Ruch gracza ' + gamerID;
     for (let j=0; j<dy; j++){
         for (let i=0; i<dx;i++){        
             squares.push(new component(i*objectWidth,j*objectHeight,objectWidth,objectHeight));
         }
     }
-    console.log(squares);
+    //console.log(squares);
     for (let j=0; j<dy; j++){
         row=[]
         for (let i=0; i<dx;i++){

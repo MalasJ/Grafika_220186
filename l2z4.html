@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<canvas id="myCanvas" width="750" height="600" style="border:1px solid #c3c3c3;">
+	Your browser does not support the canvas element.
+</canvas>
+<div style="display:none;">
+    <img id="reverse" src="kr.svg"/>
+    <img id="1" src="Windrunners.svg" width="100" height="100"/>
+    <img id="2" src="Skybreakers.svg" width="100" height="100" />
+    <img id="3" src="Dustbringers.svg" width="100" height="100" />
+    <img id="4" src="Edgedancers.svg" width="100" height="100" />
+    <img id="5" src="Truthwatchers.svg" width="100" height="100" />
+    <img id="6" src="Lightweavers.svg" width="100" height="100" />
+    <img id="7" src="Elsecallers.svg" width="100" height="100" />
+    <img id="8" src="Willshapers.svg" width="100" height="100" />
+    <img id="9" src="Stonewards.svg" width="100" height="100" />
+    <img id="10" src="Bondsmiths.svg" width="100" height="100" />
+  </div>
+<p id = "gracz"></p>
+<button id="nowa" onclick="startGame()">Nowa gra</button> <br>
+</head>
+<body onload="startGame()">
+<script>
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+var dx=5;
+var dy=4;
+var maxX=canvas.width;
+var maxY=canvas.height;
+var objectWidth=maxX/dx;
+var objectHeight=maxY/dy;
+var cards=[];
+
+var gamerID=0;
+var globalFlipped=0;
+var totalFlipped=0;
+var cardCheck=[];
+var reverse=document.getElementById("reverse");
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+canvas.addEventListener('mousedown', e=> {
+		x_pos = e.pageX;
+		y_pos = e.pageY;
+		
+        i=Math.floor(x_pos/objectWidth);
+        j=Math.floor(y_pos/objectHeight);
+        move(i,j);
+	});
+function move(i,j){
+    var id=dx*j+i;
+    if (globalFlipped<2){
+        if (cards[id].flip()){
+            cardCheck.push(cards[id]);
+        }
+    }
+    if (globalFlipped==2){
+        if (cardCheck[0].cardID==cardCheck[1].cardID){
+            cardCheck[0].matched();
+            cardCheck[1].matched();
+            cardCheck=[];
+        }
+        else{
+            console.log(cardCheck[0].cardID,cardCheck[1].cardID);
+            sleep(500).then(()=>{
+                cardCheck[0].flipBack();
+                cardCheck[1].flipBack();
+                cardCheck=[];
+            });
+        }
+    } 
+    if(totalFlipped==dx*dy){
+        document.getElementById("gracz").innerHTML = 'Wygrał gracz ' + gamerID;
+    }
+    else{
+        gamerID=3-gamerID;// flips gamer turns, 1 to 2 and 2 to 1
+        document.getElementById("gracz").innerHTML = 'Ruch gracza ' + gamerID;
+    }  
+}
+function startGame() {
+    gamerID=1;
+    cards=[];
+    globalFlipped=0;
+    totalFlipped=0;
+    card1=0;
+    card2=0;
+    document.getElementById("gracz").innerHTML = 'Ruch gracza ' + gamerID;
+    cardIDs=[];
+    for (let i=1; i<=10;i++){
+        cardIDs.push(i);
+        cardIDs.push(i);
+    }
+    shuffle(cardIDs);
+    for (let j=0; j<dy; j++){
+        for (let i=0; i<dx;i++){        
+            cards.push(new component(i*objectWidth,j*objectHeight,objectWidth,objectHeight,cardIDs[dx*j+i]));
+        }
+    }
+}
+function shuffle(array) {
+  var m = array.length, t, i;
+  while (m) {
+    i = Math.floor(Math.random() * m--);
+    t = array[m];
+    array[m] = array[i];
+    array[i] = t;
+  }
+}
+
+function component(x, y, width, height,cardID) {
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
+    this.cardID=cardID;
+    this.disabled=false;
+    this.flipped=false;
+    ctx.clearRect(this.x,this.y,objectWidth,objectHeight);
+    ctx.drawImage(reverse,this.x,this.y,objectWidth,objectHeight);
+    var img=document.getElementById(cardID);
+    this.flip = function() {
+        var success=false;
+        if (!this.disabled && !this.flipped){
+            this.flipped=true;
+            success=true;
+            globalFlipped++;
+            ctx.clearRect(this.x,this.y,objectWidth,objectHeight);
+            ctx.drawImage(img,this.x,this.y,objectWidth,objectHeight);
+        }
+        return success;
+    }
+    this.flipBack = function() {
+        this.flipped=false;
+        globalFlipped--;
+        ctx.clearRect(this.x,this.y,objectWidth,objectHeight);
+        ctx.drawImage(reverse,this.x,this.y,objectWidth,objectHeight);
+    }
+    this.matched = function(){
+        this.disabled=true;
+        this.flipped=false;
+        totalFlipped++;
+        globalFlipped--;
+    }
+}
+</script>
+</body>
+</html>
