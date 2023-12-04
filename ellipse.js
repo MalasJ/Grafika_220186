@@ -108,9 +108,9 @@ function drawEllipseNaive(x0,y0,x1,y1,color){
     ctx.stroke();
 }
 console.clear();
-drawEllipseNaive(10,10,140,500,"red");
+//drawEllipseNaive(10,10,140,500,"red");
 //dziwne wyniki dla 100
-/*testSize=100;
+testSize=100;
 
 console.log("wysokie");
 testTime(testSize,10,100,70,440); //1.411 1.727
