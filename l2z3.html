@@ -85,6 +85,13 @@ function startGame() {
             squares.push(new component(i*objectWidth,j*objectHeight,objectWidth,objectHeight));
         }
     }
+    ctx.fillStyle="black";
+    for (let j=1; j<dy; j++){
+        ctx.fillRect(0,j*objectHeight,maxX,1);
+    }
+    for (let i=1; i<dx;i++){        
+        ctx.fillRect(i*objectWidth,0,1,maxY);
+    }
     //console.log(squares);
     for (let j=0; j<dy; j++){
         row=[]
@@ -129,7 +136,7 @@ function component(x, y, width, height) {
             var img;
             if (gamerID==1){img=document.getElementById("blueO");}
             else{img=document.getElementById("redX");}
-            ctx.drawImage(img,this.x,this.y);
+            ctx.drawImage(img,this.x+1,this.y+1,objectWidth-2,objectHeight-2);
         }
         return success;
     }

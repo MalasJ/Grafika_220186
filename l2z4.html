@@ -71,12 +71,12 @@ function move(i,j){
                 cardCheck=[];
             });
         }
+        gamerID=3-gamerID;// flips gamer turns, 1 to 2 and 2 to 1
     } 
     if(totalFlipped==dx*dy){
         document.getElementById("gracz").innerHTML = 'Wygrał gracz ' + gamerID;
     }
     else{
-        gamerID=3-gamerID;// flips gamer turns, 1 to 2 and 2 to 1
         document.getElementById("gracz").innerHTML = 'Ruch gracza ' + gamerID;
     }  
 }
