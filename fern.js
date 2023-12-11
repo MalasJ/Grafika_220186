@@ -99,21 +99,39 @@ function mutant1(){
     generateBarnsleyFern(transf,probs,10**document.getElementById("iterations").value,[maxX/2,0.95*maxY],
     document.getElementById("size").value,document.getElementById("pickedColor").value);
 }
-/*function sortArrays(arrays, comparator = (a, b) => (a < b) ? -1 : (a > b) ? 1 : 0) {
-    let arrayKeys = Object.keys(arrays);
-    let sortableArray = Object.values(arrays)[0];
-    let indexes = Object.keys(sortableArray);
-    let sortedIndexes = indexes.sort((a, b) => comparator(sortableArray[a], sortableArray[b]));
-
-    let sortByIndexes = (array, sortedIndexes) => sortedIndexes.map(sortedIndex => array[sortedIndex]);
-
-    if (Array.isArray(arrays)) {
-        return arrayKeys.map(arrayIndex => sortByIndexes(arrays[arrayIndex], sortedIndexes));
-    } else {
-        let sortedArrays = {};
-        arrayKeys.forEach((arrayKey) => {
-            sortedArrays[arrayKey] = sortByIndexes(arrays[arrayKey], sortedIndexes);
-        });
-        return sortedArrays;
-    }
-}*/
+function mutant2(){
+    ctx.clearRect(0,0,maxX,maxY);
+    m11=[[0,0],[0,0.2]];
+    m12=[0,-0.12];
+    m21=[[0.845,0.035],[-0.035,0.82]];
+    m22=[0,1.6];
+    m31=[[0.2,-0.31],[0.255,0.245]];
+    m32=[0,0.29];
+    m41=[[-0.15,0.24],[0.25,0.2]];
+    m42=[0,0.68];
+    transf=[mult(translationMatrix(m22),expandMatrix(m21)),
+        mult(translationMatrix(m32),expandMatrix(m31)),
+        mult(translationMatrix(m42),expandMatrix(m41)),
+        mult(translationMatrix(m12),expandMatrix(m11))];
+    probs=[0.85,0.07,0.07,0.01];
+    generateBarnsleyFern(transf,probs,10**document.getElementById("iterations").value,[maxX/2,0.95*maxY],
+    document.getElementById("size").value,document.getElementById("pickedColor").value);
+}
+function mutant3(){
+    ctx.clearRect(0,0,maxX,maxY);
+    m11=[[0,0],[0,0.25]];
+    m12=[0,-0.14];
+    m21=[[0.85,0.02],[-0.02,0.83]];
+    m22=[0,1];
+    m31=[[0.09,-0.28],[0.3,0.11]];
+    m32=[0,0.6];
+    m41=[[-0.09,0.28],[0.3,0.09]];
+    m42=[0,0.7];
+    transf=[mult(translationMatrix(m22),expandMatrix(m21)),
+        mult(translationMatrix(m32),expandMatrix(m31)),
+        mult(translationMatrix(m42),expandMatrix(m41)),
+        mult(translationMatrix(m12),expandMatrix(m11))];
+    probs=[0.84,0.07,0.07,0.02];
+    generateBarnsleyFern(transf,probs,10**document.getElementById("iterations").value,[maxX/2,0.95*maxY],
+    document.getElementById("size").value,document.getElementById("pickedColor").value);
+}
